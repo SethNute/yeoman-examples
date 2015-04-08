@@ -11,7 +11,8 @@
 	    template: JST['app/scripts/templates/todos.ejs'],
 
 	    events: {
-	        'submit': 'createTodo'
+	        'submit': 'createTodo',
+	        'click .deletebtn': 'deleteTodo'
 	    },
 
 	    initialize: function () {
@@ -41,6 +42,18 @@
 
 	            $('#new-todo').val('');
 	        }
+	    },
+
+	    deleteTodo: function (event) {
+	    	event.preventDefault();
+	    	this.collection.each(this.ifCompletedDeleteTodo, this);
+	    },
+
+	    ifCompletedDeleteTodo: function (todo) {
+	    	if (todo.attributes.completed) {
+	    		todo.destroy();
+	    		todo.remove();
+	    	}
 	    },
 
 	    addTodoItem: function (todo) {
